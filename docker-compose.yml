@@ -18,4 +18,4 @@ services:
 
 networks:
   schemaspy-sample:
-    external: true
+    driver: bridge
