@@ -1,23 +1,24 @@
 version: '3.8'
 services:
   spy:
+    container_name: spy
     build:
       context: .
       dockerfile: ./docker/schemaspy/Dockerfile
     image: schemaspy/schemaspy
-    container_name: spy
     tty: true
     volumes:
       - ./output:/output
-      - ./schemaspy.properties:/schemaspy.properties
+      - ./schemaspy.properties.template:/schemaspy.properties.template
       - ./drivers/postgresql-42.6.0.jar:/drivers/postgresql.jar
-    command: "java -jar schemaspy.jar"
+    env_file:
+      - .env
     networks:
       - schemaspy-sample
 
   nginx_schemaspy:
-    image: nginx
     container_name: "nginx_schemaspy"
+    image: nginx
     depends_on:
       - spy
     ports:
